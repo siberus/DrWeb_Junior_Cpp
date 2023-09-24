@@ -35,6 +35,46 @@ void TrimRight( char *s )
         s[index] = '\0';
 };
 
+void TrimRigth_Alt(char * s)
+{
+    bool isSpaceLine = false;
+    auto spaceIndex{s};
+    auto charIndex{s};
+    while (true)
+    {
+        switch(*charIndex)
+        {
+            case '\0':
+            {
+                break;
+            }
+            case ' ':
+            {
+                if (isSpaceLine == false)
+                {
+                    isSpaceLine = true;
+                    spaceIndex = charIndex;
+                }
+                ++charIndex;
+                continue;
+            }
+            default:
+            {
+                if (isSpaceLine == true)
+                    isSpaceLine = false;
+                ++charIndex;
+                continue;
+            }
+        }
+        break;
+    }
+    if (isSpaceLine == true)
+        *spaceIndex = '\0';
+
+    return;
+};
+
+
 void BuildString(char *mystring, int count)
 {
     int askiiZeroCode = 48;
@@ -72,6 +112,17 @@ int main()
     std::cout << "Finish teststring1: \"" << teststring1 << "\"" << '\n';
     std::cout << "Finish teststring1 has " << strlen(teststring1) << " letters.\n"; 
     delete[] teststring1;
+
+    //Случай 1 функция rimRigth_Alt
+    teststring1 = new char[count];
+    BuildString(teststring1, count);
+    std::cout << "Start teststring1: \"" << teststring1 << "\"" << '\n';
+    std::cout << "Start teststring1 has " << strlen(teststring1) << " letters.\n";
+    TrimRigth_Alt(teststring1);
+    std::cout << "Finish teststring1 rimRigth_Alt: \"" << teststring1 << "\"" << '\n';
+    std::cout << "Finish teststring1 rimRigth_Alt has " << strlen(teststring1) << " letters.\n"; 
+    delete[] teststring1;
+
 
     //Случай 2
     char teststring2[] = "";
