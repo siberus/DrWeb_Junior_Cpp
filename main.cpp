@@ -6,29 +6,6 @@
 //Функция должна быть написана в расчёте на работу с очень длинными строками 
 //с очень большим количеством пробелов, оптимизирована по количеству обращений к памяти. 
 
-class Timer 
-{ 
-    private: 
-    // Псевдонимы типов используются для удобного доступа к вложенным типам 
-    using clock_t = std::chrono::high_resolution_clock; 
-    using second_t = std::chrono::duration<double, std::ratio<1> >; 
-    std::chrono::time_point<clock_t> m_beg; 
-    
-    public: 
-    Timer() : m_beg(clock_t::now()) {} 
-    
-    void reset() 
-    {
-        m_beg = clock_t::now(); 
-    }
-    
-    double elapsed() const 
-    { 
-        return std::chrono::duration_cast<second_t>(clock_t::now() - m_beg).count(); 
-    } 
-};
-
-
 void TrimRight( char *s )
 {
     //Определяем длину строки без пробелов
@@ -58,44 +35,6 @@ void TrimRight( char *s )
         s[index] = '\0';
 };
 
-void TrimRigth_Alt(char * s)
-{
-    bool isSpaceLine = false;
-    auto spaceIndex{s};
-    auto charIndex{s};
-    while (true)
-    {
-        switch(*charIndex)
-        {
-            case '\0':
-            {
-                break;
-            }
-            case ' ':
-            {
-                if (isSpaceLine == false)
-                {
-                    isSpaceLine = true;
-                    spaceIndex = charIndex;
-                }
-                ++charIndex;
-                continue;
-            }
-            default:
-            {
-                if (isSpaceLine == true)
-                    isSpaceLine = false;
-                ++charIndex;
-                continue;
-            }
-        }
-        break;
-    }
-    if (isSpaceLine == true)
-        *spaceIndex = '\0';
-
-    return;
-};
 
 
 void BuildString(char *mystring, int count)
@@ -129,30 +68,12 @@ int main()
     //Случай 1 
     teststring1 = new char[count];
     BuildString(teststring1, count);
-    //std::cout << "Start teststring1: \"" << teststring1 << "\"" << '\n';
+    std::cout << "Start teststring1: \"" << teststring1 << "\"" << '\n';
     std::cout << "Start teststring1 has " << strlen(teststring1) << " letters.\n";
-
-    Timer t;
     TrimRight(teststring1);
-    std::cout << "Time taken: " << t.elapsed() << '\n';
-
-    //std::cout << "Finish teststring1: \"" << teststring1 << "\"" << '\n';
+    std::cout << "Finish teststring1: \"" << teststring1 << "\"" << '\n';
     std::cout << "Finish teststring1 has " << strlen(teststring1) << " letters.\n"; 
     delete[] teststring1;
-
-    //Случай 1 функция rimRigth_Alt
-    teststring1 = new char[count];
-    BuildString(teststring1, count);
-    //std::cout << "Start teststring1: \"" << teststring1 << "\"" << '\n';
-    std::cout << "Start teststring1 has " << strlen(teststring1) << " letters.\n";
-    t.reset();
-    TrimRigth_Alt(teststring1);
-    std::cout << "Time taken: " << t.elapsed() << '\n';
-
-    //std::cout << "Finish teststring1 rimRigth_Alt: \"" << teststring1 << "\"" << '\n';
-    std::cout << "Finish teststring1 rimRigth_Alt has " << strlen(teststring1) << " letters.\n"; 
-    delete[] teststring1;
-
 
     //Случай 2
     char teststring2[] = "";
