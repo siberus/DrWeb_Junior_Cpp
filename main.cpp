@@ -9,14 +9,57 @@
 void TrimRight( char *s )
 {
     //Определяем длину строки без пробелов
-    int length=0;
-    while (s[length] != '\0') 
+    int length = 0;
+    int length2 = 0; 
+    int length3 = 0; 
+
+   /*  while (s[length] != '\0') 
         ++length;
-    while (s[length-1] == ' ')
-        --length;
-    //std::cout << length << '\n';
-    //std::cout << "string s: \"" << s << "\"" << '\n';
-    s[length] = '\0';
+   // while (s[length-1] == ' ')
+    //    --length;
+
+    //Второй вариант поиска длины строки
+    const char *cTemp(s);
+    while (*cTemp++);
+    length2 = static_cast<int>(cTemp - s - 1); */
+
+    //Оптимизированный по обращению к памяти вариант поиска длины строки
+    int index = -1;
+    bool isSpaceLine = false;
+    while (s[length3] != '\0')
+    {
+        while (s[length3] != '\0' && s[length3] != ' ')
+            ++length3;
+        if (s[length3] == '\0')
+            break;
+        if (s[length3] == ' ') 
+        {
+            index = length3;
+            isSpaceLine = true;
+            ++length3;
+            while (s[length3] != '\0' && s[length3] == ' ')
+                ++length3;
+            if (s[length3] == '\0')
+                break;
+            if (s[length3] != ' ')
+                isSpaceLine = false;
+        }
+    }
+    if (isSpaceLine == true)
+        s[index] = '\0';
+           
+     // Вспомогательный вывод результата:
+    std::cout << "Optimal solution length: " << length3 << '\n';
+    std::cout << "string s: \"" << s << "\"" << '\n';
+
+    // Вспомогательный вывод результата:
+    std::cout << "First solution length: " << length << '\n';
+    std::cout << "string s: \"" << s << "\"" << '\n';
+    //s[length] = '\0';
+
+    std::cout << "Second solution length: " << length2 << '\n';
+    std::cout << "string s: \"" << s << "\"" << '\n';
+    //s[length] = '\0';
 
 
    /*  // Выделяем память для вспомогательной строки
